@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginVertical="10dp"
+    android:layout_marginHorizontal="5dp"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/app_margin_size">
+
+        <ImageView
+            android:id="@+id/passengerImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_passenger"
+            app:tint="@color/yellow_700"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/app_margin_size"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/passengerImage">
+
+            <TextView
+                android:id="@+id/passengerIdTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/app_margin_size"
+                android:textColor="@color/black"
+                android:fontFamily="@font/montserrat_regular"
+                app:layout_constraintTop_toBottomOf="@id/pickUpLocationTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="XXXX-XXX-XXXX"/>
+
+            <TextView
+                android:id="@+id/passengerCountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/item_layout_margin_size"
+                android:textColor="@color/black"
+                android:fontFamily="@font/montserrat_regular"
+                app:layout_constraintTop_toBottomOf="@id/pickUpLocationTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="No of Passengers: 2"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

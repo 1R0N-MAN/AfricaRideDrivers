@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginVertical="10dp"
+    android:layout_marginHorizontal="5dp"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/app_margin_size">
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/taxiImage"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="@dimen/app_margin_size"
+                android:src="@drawable/ic_passenger"
+                app:tint="@color/yellow_700"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/app_margin_size"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/linearLayout1">
+
+            <TextView
+                android:id="@+id/passengerIdTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/app_margin_size"
+                android:textColor="@color/black"
+                android:fontFamily="@font/montserrat_regular"
+                app:layout_constraintTop_toBottomOf="@id/pickUpLocationTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="XXXX-XXX-XXXX"/>
+
+            <TextView
+                android:id="@+id/passengerCountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/item_layout_margin_size"
+                android:textColor="@color/black"
+                android:fontFamily="@font/montserrat_regular"
+                app:layout_constraintTop_toBottomOf="@id/pickUpLocationTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="No of Passengers: 4"/>
+
+            <TextView
+                android:id="@+id/phoneNumberTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/app_margin_size"
+                android:textColor="@color/black"
+                android:fontFamily="@font/montserrat_regular"
+                app:layout_constraintTop_toBottomOf="@id/pickUpLocationTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Phone Number: +234 123 456 7890"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/pickUpLocationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/app_margin_size"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_regular"
+            app:layout_constraintTop_toBottomOf="@id/linearLayout2"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Pick Up: No. 1, NCCF Road, Challenge, Ibadan"/>
+
+        <TextView
+            android:id="@+id/destinationLocationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/app_margin_size"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_regular"
+            app:layout_constraintTop_toBottomOf="@id/pickUpLocationTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Destination: Dominoes Pizza, Odo-ona, Ibadan"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
