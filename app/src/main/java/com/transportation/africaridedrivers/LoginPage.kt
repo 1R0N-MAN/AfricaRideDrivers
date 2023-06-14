@@ -18,6 +18,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class LoginPage : Fragment() {
@@ -29,6 +31,7 @@ class LoginPage : Fragment() {
     private lateinit var navController: NavController
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var dialog: Dialog
+    private lateinit var db: FirebaseFirestore
 
 
     override fun onCreateView(
@@ -50,6 +53,7 @@ class LoginPage : Fragment() {
             AFRICA_RIDE_DRIVERS_SHARED_PREFERENCES, Context.MODE_PRIVATE)
 
         auth = Firebase.auth
+        db = Firebase.firestore
 
         getStoredDriverKey()
         return view
@@ -66,6 +70,7 @@ class LoginPage : Fragment() {
             if(task.isSuccessful){
                 // check whether to save driver key depending on remember me checkbox
                 saveDriverKey(driverKey)
+                changeDriverIsActiveStatus(driverKey)
                 // Move to Home Page
                 val action = LoginPageDirections.actionLoginPageToHomePage(driverKey)
                 navController.navigate(action)
@@ -111,5 +116,12 @@ class LoginPage : Fragment() {
             rememberMeCheckBox.isChecked = true
             driverKeyEditText.setText(storedDriverKey)
         }
+    }
+
+    private fun changeDriverIsActiveStatus(driverId: String, isActive: Boolean=true) {
+        val selectedDriverRef = db.collection(DRIVERS_LIST_DATA_PATH).document(driverId)
+        selectedDriverRef.update("isActive", isActive)
+
+        Toast.makeText(context, "Driver Is Active Status Changed", Toast.LENGTH_SHORT).show()
     }
 }
