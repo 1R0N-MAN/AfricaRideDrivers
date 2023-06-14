@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,7 @@ class HomePage : Fragment() {
     private lateinit var db: FirebaseFirestore
     private lateinit var completeRideButton: Button
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var settingsButton: ImageButton
     private lateinit var publicPassengerDetailsList: MutableList<PublicPassengerDetails>
     private lateinit var privatePassengerDetailsList: MutableList<PrivatePassengerDetails>
     private lateinit var publicPassengerListAdapter: PublicPassengerListAdapter
@@ -43,6 +45,10 @@ class HomePage : Fragment() {
         auth = Firebase.auth
         db = FirebaseFirestore.getInstance()
         passengerListRecyclerView = view.findViewById(R.id.passengerListRecyclerView)
+        settingsButton = view.findViewById(R.id.settingsButton)
+        settingsButton.setOnClickListener {
+            openHistoryPage()
+        }
 
         // check whether driver is public or private
         val driverKey = arguments?.getString("driverKey")
@@ -57,6 +63,10 @@ class HomePage : Fragment() {
         swipeRefreshLayout.setOnRefreshListener { checkDriverType(driverKey) }
 
         return view
+    }
+
+    private fun openHistoryPage() {
+        // Open History Page
     }
 
     private fun completeRide(driverKey: String?) {
