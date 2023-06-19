@@ -26,5 +26,20 @@
         android:id="@+id/homePage"
         android:name="com.transportation.africaridedrivers.HomePage"
         android:label="fragment_home_page"
-        tools:layout="@layout/fragment_home_page" />
+        tools:layout="@layout/fragment_home_page" >
+        <action
+            android:id="@+id/action_homePage_to_driverHistoryPage"
+            app:destination="@id/driverHistoryPage" >
+
+            <argument
+                android:name="driverKey"
+                app:argType="string" />
+
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/driverHistoryPage"
+        android:name="com.transportation.africaridedrivers.DriverHistoryPage"
+        android:label="fragment_driver_history_page"
+        tools:layout="@layout/fragment_driver_history_page" />
 </navigation>

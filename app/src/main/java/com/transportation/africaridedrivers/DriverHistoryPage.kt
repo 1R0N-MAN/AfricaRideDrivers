@@ -1,6 +1,5 @@
 package com.transportation.africaridedrivers
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
@@ -8,141 +7,50 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
-class HomePage : Fragment() {
+class DriverHistoryPage : Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var passengerListRecyclerView: RecyclerView
     private lateinit var dialog: Dialog
     private lateinit var db: FirebaseFirestore
-    private lateinit var completeRideButton: Button
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    private lateinit var historyButton: ImageButton
     private lateinit var publicPassengerDetailsList: MutableList<PublicPassengerDetails>
     private lateinit var privatePassengerDetailsList: MutableList<PrivatePassengerDetails>
     private lateinit var publicPassengerListAdapter: PublicPassengerListAdapter
     private lateinit var privatePassengerListAdapter: PrivatePassengerListAdapter
     private var driverType: String = ""
+    private val rideCompleted = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_home_page, container, false)
-
-        // check whether driver is public or private
-        val driverKey = arguments?.getString("driverKey")
+        val view = inflater.inflate(R.layout.fragment_driver_history_page, container, false)
 
         auth = Firebase.auth
         db = FirebaseFirestore.getInstance()
         passengerListRecyclerView = view.findViewById(R.id.passengerListRecyclerView)
-        historyButton = view.findViewById(R.id.settingsButton)
-        historyButton.setOnClickListener {
-            openHistoryPage(driverKey)
-        }
 
+        // check whether driver is public or private
+        val driverKey = arguments?.getString("driverKey")
+        Toast.makeText(context, "Driver Key in Home Page: $driverKey", Toast.LENGTH_LONG).show()
 
         checkDriverType(driverKey)
-
-        completeRideButton = view.findViewById(R.id.completeRideButton)
-        completeRideButton.setOnClickListener { completeRide(driverKey) }
 
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
         swipeRefreshLayout.setOnRefreshListener { checkDriverType(driverKey) }
 
         return view
-    }
-
-    private fun openHistoryPage(driverKey: String?) {
-        val action = HomePageDirections.actionHomePageToDriverHistoryPage(driverKey)
-        findNavController().navigate(action)
-    }
-
-    private fun completeRide(driverKey: String?) {
-        if (driverKey == null){
-            Toast.makeText(context, "Driver Details not found! Please try again later", Toast.LENGTH_LONG).show()
-        } else {
-            showLoadingDialog()
-
-            val passengerDataRef = db.collection(DRIVERS_LIST_DATA_PATH)
-                .document(driverKey)
-                .collection(PASSENGER_DATA_PATH)
-                .whereEqualTo("rideCompleted", false)
-
-            passengerDataRef.get().addOnSuccessListener { querySnapshot ->
-                val passengersToUpdate = mutableListOf<DocumentReference>()
-
-                for (document in querySnapshot.documents) {
-                    passengersToUpdate.add(document.reference)
-                }
-
-                // Update the passengers to "rideCompleted = true"
-                for (passengerRef in passengersToUpdate) {
-                    passengerRef.update("rideCompleted", true)
-                }
-
-                clearPassengerList()
-                resetPassengerCount(driverKey)
-                changeDriverIsActiveStatus(driverKey)
-
-                dialog.dismiss()
-                Toast.makeText(context, "Ride Completed Successfully!", Toast.LENGTH_LONG).show()
-            }.addOnFailureListener { exception ->
-                dialog.dismiss()
-                Log.w(tag, "Error loading passenger data", exception)
-                Toast.makeText(context, "Error loading passenger data", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
-    private fun changeDriverIsActiveStatus(driverId: String, isActive: Boolean=true) {
-        val selectedDriverRef = db.collection(DRIVERS_LIST_DATA_PATH).document(driverId)
-        selectedDriverRef.update("isActive", isActive)
-
-        Toast.makeText(context, "Driver Is Active Status Changed", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun resetPassengerCount(driverKey: String) {
-        val driverRef = db.collection(DRIVERS_LIST_DATA_PATH).document(driverKey)
-        driverRef.get().addOnSuccessListener { snapshot ->
-            if (snapshot.exists()){
-                val originalPassengerCount = snapshot.getLong("originalPassengerCount")?.toInt()
-                driverRef.update("passengerCount", originalPassengerCount)
-                Toast.makeText(context, "Passenger Count Reset!", Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(context, "Error: Couldn't reset passenger count!", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun clearPassengerList() {
-        when (driverType) {
-            "public" -> {
-                publicPassengerDetailsList.clear()
-                publicPassengerListAdapter.notifyDataSetChanged()
-            }
-            "private" -> {
-                privatePassengerDetailsList.clear()
-                privatePassengerListAdapter.notifyDataSetChanged()
-            }
-            else -> {
-                Toast.makeText(context, "Error: Couldn't clear passenger list!", Toast.LENGTH_LONG).show()
-            }
-        }
     }
 
     private fun checkDriverType(driverKey: String?) {
@@ -192,7 +100,7 @@ class HomePage : Fragment() {
         val passengerDataRef = db.collection(DRIVERS_LIST_DATA_PATH)
             .document(driverKey)
             .collection(PASSENGER_DATA_PATH)
-            .whereEqualTo("rideCompleted", false)
+            .whereEqualTo("rideCompleted", rideCompleted)
 
         passengerDataRef.get()
             .addOnSuccessListener { passengers ->
@@ -228,7 +136,7 @@ class HomePage : Fragment() {
         val passengerDataRef = db.collection(DRIVERS_LIST_DATA_PATH)
             .document(driverKey)
             .collection(PASSENGER_DATA_PATH)
-            .whereEqualTo("rideCompleted", false)
+            .whereEqualTo("rideCompleted", rideCompleted)
 
         passengerDataRef.get()
             .addOnSuccessListener { passengers ->
