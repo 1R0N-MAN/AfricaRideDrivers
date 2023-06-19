@@ -67,8 +67,12 @@ class HomePage : Fragment() {
     }
 
     private fun openHistoryPage(driverKey: String?) {
-        val action = HomePageDirections.actionHomePageToDriverHistoryPage(driverKey)
-        findNavController().navigate(action)
+        if (driverKey!=null) {
+            val action = HomePageDirections.actionHomePageToDriverHistoryPage(driverKey)
+            findNavController().navigate(action)
+        } else {
+            Toast.makeText(context, "Error: Driver Key Not Found!", Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun completeRide(driverKey: String?) {
@@ -111,8 +115,6 @@ class HomePage : Fragment() {
     private fun changeDriverIsActiveStatus(driverId: String, isActive: Boolean=true) {
         val selectedDriverRef = db.collection(DRIVERS_LIST_DATA_PATH).document(driverId)
         selectedDriverRef.update("isActive", isActive)
-
-        Toast.makeText(context, "Driver Is Active Status Changed", Toast.LENGTH_SHORT).show()
     }
 
     private fun resetPassengerCount(driverKey: String) {
@@ -121,7 +123,6 @@ class HomePage : Fragment() {
             if (snapshot.exists()){
                 val originalPassengerCount = snapshot.getLong("originalPassengerCount")?.toInt()
                 driverRef.update("passengerCount", originalPassengerCount)
-                Toast.makeText(context, "Passenger Count Reset!", Toast.LENGTH_LONG).show()
             } else {
                 Toast.makeText(context, "Error: Couldn't reset passenger count!", Toast.LENGTH_LONG).show()
             }
@@ -213,7 +214,6 @@ class HomePage : Fragment() {
                 passengerListRecyclerView.adapter = publicPassengerListAdapter
                 dialog.dismiss()
 
-                Toast.makeText(context, "Public Passengers Loaded", Toast.LENGTH_LONG).show()
                 swipeRefreshLayout.isRefreshing = false
             }
             .addOnFailureListener { exception ->
@@ -252,7 +252,6 @@ class HomePage : Fragment() {
                 passengerListRecyclerView.adapter = privatePassengerListAdapter
                 dialog.dismiss()
 
-                Toast.makeText(context, "Private Passengers Loaded", Toast.LENGTH_LONG).show()
                 swipeRefreshLayout.isRefreshing = false
             }
             .addOnFailureListener { exception ->

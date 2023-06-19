@@ -43,7 +43,6 @@ class DriverHistoryPage : Fragment() {
 
         // check whether driver is public or private
         val driverKey = arguments?.getString("driverKey")
-        Toast.makeText(context, "Driver Key in Home Page: $driverKey", Toast.LENGTH_LONG).show()
 
         checkDriverType(driverKey)
 
@@ -120,8 +119,6 @@ class DriverHistoryPage : Fragment() {
                 publicPassengerListAdapter = PublicPassengerListAdapter(requireContext(), publicPassengerDetailsList)
                 passengerListRecyclerView.adapter = publicPassengerListAdapter
                 dialog.dismiss()
-
-                Toast.makeText(context, "Public Passengers Loaded", Toast.LENGTH_LONG).show()
                 swipeRefreshLayout.isRefreshing = false
             }
             .addOnFailureListener { exception ->
@@ -159,8 +156,6 @@ class DriverHistoryPage : Fragment() {
                 privatePassengerListAdapter = PrivatePassengerListAdapter(requireContext(), privatePassengerDetailsList)
                 passengerListRecyclerView.adapter = privatePassengerListAdapter
                 dialog.dismiss()
-
-                Toast.makeText(context, "Private Passengers Loaded", Toast.LENGTH_LONG).show()
                 swipeRefreshLayout.isRefreshing = false
             }
             .addOnFailureListener { exception ->

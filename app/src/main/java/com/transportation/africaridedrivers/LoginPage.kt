@@ -121,7 +121,5 @@ class LoginPage : Fragment() {
     private fun changeDriverIsActiveStatus(driverId: String, isActive: Boolean=true) {
         val selectedDriverRef = db.collection(DRIVERS_LIST_DATA_PATH).document(driverId)
         selectedDriverRef.update("isActive", isActive)
-
-        Toast.makeText(context, "Driver Is Active Status Changed", Toast.LENGTH_SHORT).show()
     }
 }
